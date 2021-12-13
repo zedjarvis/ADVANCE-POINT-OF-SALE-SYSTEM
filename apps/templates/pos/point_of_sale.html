@@ -1,0 +1,357 @@
+{% extends 'pos/base.html' %}
+
+{% block title %} CASHIER | ADVANCE-POS {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<style>
+    table {
+        border-collapse: collapse;
+        border: 2px solid black;
+    }
+    table thead{
+        border: 2px solid black;
+    }
+
+    td {
+        border: 2px solid black;
+        position: relative;
+        padding: 5px 10px;
+    }
+
+    tr.strikeout td:before{
+        content: " ";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        border-bottom: 3px solid red;
+        width: 100%;
+
+    }
+    .custom-input{
+        border: 2px solid black;
+    }
+
+    .hide {
+        display: none;
+    }
+
+</style>
+
+
+<!--   INCLUDING THE BODY TAG -->
+{% block bodytag %} {% include 'pos/includes/body_tag.html' %} {% endblock bodytag %}
+
+<!--   INCLUDING THE TOP NAV -->
+{% block topnav %} {% include 'pos/includes/topnav.html' %} {% endblock topnav %}
+
+<!--   INCLUDING THE SIDEBAR -->
+{% block sidebar %} {% include 'pos/includes/sidebar.html' %} {% endblock sidebar %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Process Sales</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">p.o.s</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <form id="item-add-form">
+        <div class="row" style="margin: 20px;">
+            <div class="col-4 form-group">
+                <label for="item_name">ITEM</label>
+                <input type="text" id="item_nm" name="item_nm" class="form-control custom-input" placeholder="Item"
+                    >
+                <div class="text-red" id='item-input-error'></div>
+            </div>
+            <div class="col-0 form-group">
+                <label for="quantity">QTY</label>
+                <input type="text" id="quantity" name="quantity" class="form-control custom-input" placeholder="quantity"
+                    value="1">
+                <div class="text-red" id="quantity-input-error"></div>
+            </div>
+            <div class="col-5">
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> add</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header row container-fluid">
+                            <a href="#" class="btn btn-sm btn-outline-success" style="margin-bottom: 5px" id="refresh"><i class="fa fa-refresh"></i>
+                                Refresh</a>
+                            <div class="row" style="margin-left: 20px; margin-right: 5px;">
+                                <h3 class="card-title" style="font-weight: 500; letter-spacing: 3px">SUB TOTAL : </h3>
+                                <div id="total-purchased-items" class="alert-warning" style="min-width: 150px;border: 5px solid black; border-radius: 10px;
+                                font-size: 30px; font-weight: 600; letter-spacing: 2px"> 0.00</div>
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0" style="height: 400px;">
+                            <table class="table data-table table-responsive-md table-head-fixed text-nowrap table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NO:</th>
+                                        <th scope="col">ITEM</th>
+                                        <th scope="col">QUANTITY</th>
+                                        <th scope="col">ITEM PRICE</th>
+                                        <th scope="col">PRICE TOTAL</th>
+                                        <th scope="col">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <script src="{% static 'pos/plugins/jquery/jquery.min.js' %}"></script>
+            <script type="text/javascript">
+                // autocomplete items table
+                $(function () {
+                    $.get("/restful_api/get_object_list/", { model: "items" }, function (data) {
+                        var availableItems = data.items;
+
+                        $("#item_nm").autocomplete({
+                            source: availableItems
+                        });
+                    }).fail(function (data) {
+                        Swal.fire(
+                            'Something Went Wrong!',
+                            `${data.error}`,
+                            'error'
+                        )
+                    });
+
+                });
+
+
+                var purchasedItemsList = []; // append item and quantity
+                var allQuantity = []; // append all quantities here
+                var allPrice = []; // append all prices here
+
+                // table row initial index for auto-increment
+                var table_row = 0;
+                $("#item-add-form").submit(function (e) {
+                    e.preventDefault();
+                    var item = $("input[name='item_nm']").val();
+                    var quantity = $("input[name='quantity']").val();
+
+                    // both item and quantity are empty
+                    if (item == "" && quantity == "") {
+                        $("#item-input-error").html("please Add an item first!");
+                        $("#quantity-input-error").html("Please enter item quantity!");
+                        return;
+                    }
+
+                    // no item entered error
+                    if (item == ""){
+                        $("#item-input-error").html("please Add an item first!");
+                        $("#quantity-input-error").html("");
+                        return;
+                    }
+
+                    // quantity entered error
+                    if (quantity == "") {
+                        $("#quantity-input-error").html("Please enter item quantity!");
+                        $("#item-input-error").html("");
+                        return
+                    }
+
+                    $("#item-input-error").html("");
+                    $("#quantity-input-error").html("");
+
+                    // send get request to database to get price
+                    $.get("/restful_api/get_item_price/", { item: item }, function (data) {
+                        // get item price from databse
+                        if (data.price) {
+                            // auto increment table row value
+                            table_row++;
+                            var item_price = data.price;
+                            // get item value on quantity
+                            var item_value = parseFloat(item_price) * parseFloat(quantity);
+                            // append values to table
+                            appendToTable(item, quantity, item_price, item_value, table_row);
+                            // clear item name input field on submit
+                            $("input[name='item_nm']").val("");
+                        }else {
+                            Swal.fire(
+                                'Something Went Wrong!',
+                                `${data.error}`,
+                                'error'
+                            )
+                        }
+                    }).fail(function (data) {
+                        Swal.fire(
+                            'Something Went Wrong!',
+                            `${data.error}`,
+                            'error'
+                        )
+                    });
+
+                });
+
+                // append item to sales table
+                function appendToTable(name, qty, price, value, table_row) {
+
+                    allPrice.push(value); // price to list
+                    allQuantity.push(qty); // qty to list
+                    purchasedItemsList.push({id: table_row, name: name, qty: qty }); // id , name , qty tor list of dicts
+                    getSubTotal();
+
+                    // test code
+
+                    // add data to table
+                    $(".data-table > tbody:last-child").append(`
+                                            <tr class="">
+                                                <td scope="row" class="table-active" style="white-space: nowrap; width: 20px;">${table_row}</td>
+                                                <td>${name}</td>
+                                                <td style="white-space: nowrap; width: 30px;"><input type="text" name="item-qty" id="item-qty" class="form-control" value="${qty}"></td>
+                                                <td style="white-space: nowrap; width: 40px;"><input type="text" name="price" id="price" class="form-control" disabled value="${price}"></td>
+                                                <td style="white-space: nowrap; width: 40px;"><input type="text" name="value" id="value" class="form-control" disabled value="${value}"></td>
+                                                <td style="white-space: nowrap; width: 50px">
+                                                    <button class="btn btn-success btn-edit hide">Update</button>
+                                                    <button class="btn btn-warning btn-cancel">Cancel</button>
+                                                    <button class="btn btn-danger btn-delete hide">Delete</button>
+                                                    <button class="btn btn-info btn-undo hide">Undo</button>
+                                                </td>
+                                            </tr>
+                            `)
+                };
+
+                // show edit button when qty input data changes
+                    // using the $body will set listener to all input fields
+                    $("body").on("input", "#item-qty", function () {
+                        $(this).closest("tr").find("td:eq(-1) .btn-edit").removeClass("hide"); // reveal edit button
+                    })
+
+                    // update item quantity and total price
+                    $("body").on("click", ".btn-edit", function () {
+                        var qty = $(this).closest("tr").find("td:eq(2) input").val(); // get new qty value
+                        var id = parseInt($(this).closest("tr").find("td:eq(0)").html()); // get row id
+                        var price = $(this).closest("tr").find("td:eq(3) input").val();
+                        $(this).closest("tr").find("td:eq(4) input").val(parseFloat(qty) * parseFloat(price));
+                        updateObject(id, qty, price); // update object
+
+                    });
+
+                    // using strike row to mark cancelled and cancelling item
+                    $("body").on("click", ".btn-cancel", function () {
+                        $(this).parents("tr").addClass("strikeout"); // strike row
+                        $(this).closest("tr").find("td:eq(2) input").prop('disabled', true) // make quantity column uneditable
+                        $(this).closest("tr").find("td:eq(-1) .btn-edit").addClass("hide"); // hide edit button
+                        $(this).closest("tr").find("td:eq(-1) .btn-cancel").addClass("hide"); // hide cancel button
+                        $(this).closest("tr").find("td:eq(-1) .btn-undo").removeClass("hide"); // reveal undo button
+                        $(this).closest("tr").find("td:eq(-1) .btn-delete").removeClass("hide"); // reveal delete button
+                        var id = parseInt($(this).closest("tr").find("td:eq(0)").html()); // get row id
+                        removeObject(id);
+                    });
+
+                    // undo cancel effect
+                    $("body").on("click", ".btn-undo", function () {
+                        var qty = $(this).closest("tr").find("td:eq(2) input").val(); // get new qty value
+                        var undo_id = $(this).closest("tr").find("td:eq(0)").html(); // get row id
+                        var name = $(this).closest("tr").find("td:eq(1)").html();
+                        var value = $(this).closest("tr").find("td:eq(3) input").val();
+
+                        $(this).parents("tr").removeClass("strikeout") // remove strike from row
+                        $(this).closest("tr").find("td:eq(2) input").prop('disabled', false); // make quantity column editable
+                        $(this).closest("tr").find("td:eq(-1) .btn-edit").removeClass("hide"); // reveal edit button
+                        $(this).closest("tr").find("td:eq(-1) .btn-cancel").removeClass("hide"); // reveal cancel button
+                        $(this).closest("tr").find("td:eq(-1) .btn-undo").addClass("hide"); // hide undo button
+                        $(this).closest("tr").find("td:eq(-1) .btn-delete").addClass("hide"); // hide delete button
+
+                        undoRemove(undo_id, name, qty, value);
+                    });
+
+                    // delete row
+                    $("body").on("click", ".btn-delete", function () {
+                        $(this).parents("tr").remove()
+                    });
+
+                    // function edit item
+                    // takes in id and changed the quantity
+                    function updateObject(id, qty, price) {
+                        allPrice[id-1] = parseFloat(qty) * parseFloat(price); // price to list
+                        allQuantity[id-1] = qty;
+                        console.log(allQuantity, allPrice);
+                        // find index of item in array of objects
+                        objIndex = purchasedItemsList.findIndex((obj => obj.id == id));
+                        purchasedItemsList[objIndex].qty = qty;
+                        getSubTotal();
+                    }
+
+                    //function remove item
+                    // takes in id
+                    function removeObject(id) {
+                        allPrice[id - 1] = 0; // price to list
+                        allQuantity[id - 1] = 0;
+                        objIndex = purchasedItemsList.findIndex((obj => obj.id == id));
+                        console.log(purchasedItemsList[objIndex]);
+                        //purchasedItemsList[objIndex] = undefined;
+                        purchasedItemsList[objIndex] = 0;
+                        getSubTotal();
+
+
+
+                    }
+
+                    // undo cancell function
+                    function undoRemove(id, name, qty, value) {
+                        allPrice[id - 1] = parseFloat(value) * parseFloat(qty); // price to list
+                        allQuantity[id - 1] = qty;
+                        objIndex = purchasedItemsList.findIndex((obj => obj.id == id));
+                        purchasedItemsList[objIndex] = { id: id, name: name, qty: qty };
+                        //purchasedItemsList.push({ id: id, name: name, qty: qty }); // id , name , qty tor list of dicts
+                        getSubTotal();
+                    }
+
+                    // function to sum total price
+                    function getSubTotal() {
+                        let number_format = new Intl.NumberFormat('en-US'); // format number with commas
+                        $( "#total-purchased-items").html(`${number_format.format((Math.round(allPrice.reduce((a, b) => a + b, 0) * 100) / 100).toFixed(2))}`); // always show 2dps
+                        //alert(allPrice.reduce((a, b) => a + b, 0));
+                    }
+
+
+
+            </script>
+
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+{% block footer %} {% include 'pos/includes/footer.html' %} {% endblock footer %}
+
+
+{% endblock content %}
