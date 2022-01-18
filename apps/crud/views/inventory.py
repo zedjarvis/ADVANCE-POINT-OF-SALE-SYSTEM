@@ -13,10 +13,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 class CreateCategory(View):
     def post(self, request):
-        category = Category(category_name=request.POST.get('category_name'))
-        category.save()
-
-        return JsonResponse({'category_name': category.category_name})
+        try:
+            category_name = request.POST.get('category_name')
+            category = Category(category_name=category_name)
+            category.save()
+            return JsonResponse({'category_name': category.category_name})
+        except (Exception) as e:
+            return JsonResponse({'error': str(e)})
 
 
 class CreateItem(View):
@@ -77,7 +80,7 @@ class EditItem(View):
         item = Item.objects.get(id=id)
         item.item_name = item_name
         item.description = item_description
-        item.item_quantity = item_quantity
+        item.quantity = item_quantity
         item.unit_price = unit_price
         item.purchase_price = purchase_price
         item.reorder_level = reorder_level

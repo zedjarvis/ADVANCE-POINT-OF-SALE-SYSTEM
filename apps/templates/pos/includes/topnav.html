@@ -1,142 +1,192 @@
 {% block topnav %}
+
 {% load static %}
-<!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{% url 'dashboard' %}" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
-        </li>
-    </ul>
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
-        <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                <i class="fas fa-search"></i>
+<!-- partial:partials/_navbar.html -->
+<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
+        <div class="me-3">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+        <div>
+            <a class="navbar-brand brand-logo" href="#" style="margin-top: 3px; font-weight: 900; letter-spacing: 4px;">
+                <h5 style="color: darkblue; font-weight: bold;">Advance<span style="color: black;">Pos</span></h5>
             </a>
-            <div class="navbar-search-block">
-                <form class="form-inline">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                <i class="fas fa-times"></i>
-                            </button>
+            <a class="navbar-brand brand-logo-mini" href="#">
+                <img src="{% static 'pos/dist/images/logo-mini.svg' %}" alt="logo" />
+            </a>
+        </div>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-top">
+        <ul class="navbar-nav">
+            <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
+                <h1 class="welcome-text">Hello <span class="text-black">{{user.username|lower}}</span>, <span id="time-greeting">
+                        <!--greetings goes here-->
+                    </span></h1>
+                <h3 class="welcome-sub-text">Your performance analytics dashboard to your delight. </h3>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+
+            <li class="nav-item dropdown d-none d-lg-block">
+                <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown"
+                    href="#" data-bs-toggle="dropdown" aria-expanded="false"> Select Category </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+                    aria-labelledby="messageDropdown">
+                    <a class="dropdown-item py-3">
+                        <p class="mb-0 font-weight-medium float-left">Select category</p>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">Bootstrap Bundle </p>
+                            <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p>
                         </div>
-                    </div>
+                    </a>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">Angular Bundle</p>
+                            <p class="fw-light small-text mb-0">Everything you’ll ever need for your Angular projects
+                            </p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">VUE Bundle</p>
+                            <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">React Bundle</p>
+                            <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p>
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item d-none d-lg-block">
+                <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
+                    <span class="input-group-addon input-group-prepend border-right">
+                        <span class="icon-calendar input-group-text calendar-icon"></span>
+                    </span>
+                    <input type="text" class="form-control">
+                </div>
+            </li>
+            <li class="nav-item">
+                <form class="search-form" action="#">
+                    <i class="icon-search"></i>
+                    <input type="search" class="form-control" placeholder="Search Here" title="Search here">
                 </form>
-            </div>
-        </li>
-
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-comments"></i>
-                <span class="badge badge-danger navbar-badge">3</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="#" class="dropdown-item">
-                    <!-- Message Start -->
-                    <div class="media">
-                        <img src="{% static 'pos/dist/img/user1-128x128.jpg' %}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                        <div class="media-body">
-                            <h3 class="dropdown-item-title">
-                                Brad Diesel
-                                <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                            </h3>
-                            <p class="text-sm">Call me whenever you can...</p>
-                            <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                    <i class="icon-mail icon-lg"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+                    aria-labelledby="notificationDropdown">
+                    <a class="dropdown-item py-3 border-bottom">
+                        <p class="mb-0 font-weight-medium float-left">You have 4 new notifications </p>
+                        <span class="badge badge-pill badge-primary float-right">View all</span>
+                    </a>
+                    <a class="dropdown-item preview-item py-3">
+                        <div class="preview-thumbnail">
+                            <i class="mdi mdi-alert m-auto text-primary"></i>
                         </div>
-                    </div>
-                    <!-- Message End -->
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <!-- Message Start -->
-                    <div class="media">
-                        <img src="{% static 'pos/dist/img/user8-128x128.jpg' %}" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                        <div class="media-body">
-                            <h3 class="dropdown-item-title">
-                                John Pierce
-                                <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                            </h3>
-                            <p class="text-sm">I got your message bro</p>
-                            <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                        <div class="preview-item-content">
+                            <h6 class="preview-subject fw-normal text-dark mb-1">Application Error</h6>
+                            <p class="fw-light small-text mb-0"> Just now </p>
                         </div>
-                    </div>
-                    <!-- Message End -->
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <!-- Message Start -->
-                    <div class="media">
-                        <img src="{% static 'pos/dist/img/user3-128x128.jpg' %}" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                        <div class="media-body">
-                            <h3 class="dropdown-item-title">
-                                Nora Silvester
-                                <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                            </h3>
-                            <p class="text-sm">The subject goes here</p>
-                            <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                    </a>
+                    <a class="dropdown-item preview-item py-3">
+                        <div class="preview-thumbnail">
+                            <i class="mdi mdi-settings m-auto text-primary"></i>
                         </div>
+                        <div class="preview-item-content">
+                            <h6 class="preview-subject fw-normal text-dark mb-1">Settings</h6>
+                            <p class="fw-light small-text mb-0"> Private message </p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item preview-item py-3">
+                        <div class="preview-thumbnail">
+                            <i class="mdi mdi-airballoon m-auto text-primary"></i>
+                        </div>
+                        <div class="preview-item-content">
+                            <h6 class="preview-subject fw-normal text-dark mb-1">New user registration</h6>
+                            <p class="fw-light small-text mb-0"> 2 days ago </p>
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="icon-bell"></i>
+                    <span class="count"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
+                    aria-labelledby="countDropdown">
+                    <a class="dropdown-item py-3">
+                        <p class="mb-0 font-weight-medium float-left">You have 7 unread mails </p>
+                        <span class="badge badge-pill badge-primary float-right">View all</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-thumbnail">
+                            <img src="{% static 'pos/dist/images/faces/face10.jpg' %}" alt="image"
+                                class="img-sm profile-pic">
+                        </div>
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
+                            <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-thumbnail">
+                            <img src="{% static 'pos/dist/images/faces/face12.jpg' %}" alt="image"
+                                class="img-sm profile-pic">
+                        </div>
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
+                            <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item preview-item">
+                        <div class="preview-thumbnail">
+                            <img src="{% static 'pos/dist/images/faces/face1.jpg' %}" alt="image"
+                                class="img-sm profile-pic">
+                        </div>
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
+                            <p class="fw-light small-text mb-0"> The meeting is cancelled </p>
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown d-none d-lg-block user-dropdown">
+                <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="img-xs rounded-circle"
+                        data-intro="WELCOME to <u><strong>ADVANCE POINT OF SALE</strong></u>, Manage your business Faster, Click here to logout."
+                        data-position="left" src="{% static 'pos/dist/images/avatar.png' %}" alt="Profile image"> </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                    <div class="dropdown-header text-center">
+                        <img class="img-md rounded-circle" src="{% static 'pos/dist/images/avatar.png' %}" height="40px; width: 40px;"
+                            alt="Profile image">
+                        <p class="mb-1 mt-3 font-weight-semibold">Cedrouseroll Omondi</p>
+                        <p class="fw-light text-muted mb-0">{{user.email}}</p>
                     </div>
-                    <!-- Message End -->
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-            </div>
-        </li>
-        <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">15</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">15 Notifications</span>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    <span class="float-right text-muted text-sm">3 mins</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-users mr-2"></i> 8 friend requests
-                    <span class="float-right text-muted text-sm">12 hours</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-file mr-2"></i> 3 new reports
-                    <span class="float-right text-muted text-sm">2 days</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                <i class="fas fa-expand-arrows-alt"></i>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                <i class="fas fa-cog"></i>
-            </a>
-        </li>
-    </ul>
+                    <a class="dropdown-item" id="logout-button"><i
+                            class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Logout</a>
+                </div>
+            </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+            data-bs-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+        </button>
+    </div>
 </nav>
-<!-- /.navbar -->
+<!-- partial -->
 
 {% endblock topnav %}

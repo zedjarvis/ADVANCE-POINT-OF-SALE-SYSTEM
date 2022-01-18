@@ -1,196 +1,89 @@
 {% block sidebar %}
 
 {% load static %}
-<style>
-    .online-dot {
-    display: inline-block;
-	-webkit-animation-name: flash;
-	animation-name: flash;
-	-webkit-animation-duration: 2s;
-	animation-duration: 1s;
-	-webkit-animation-iteration-count: infinite;
-	animation-iteration-count: infinite;
-}
-</style>
+
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-        <img src="{% static 'pos/dist/img/AdminLTELogo.png' %}" alt="Apos Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
-        <span class="brand-text font-weight-bolder">ADVANCE-POS</span>
-    </a>
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item {{dashboard}}">
+            <a class="nav-link" href="{% url 'dashboard' %}">
+                <i class="mdi mdi-grid-large menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
+                <i class="mdi mdi-account-supervisor menu-icon"></i>
+                <span class="menu-title">Admin Panel</span>
+            </a>
+        </li>
+        <li class="nav-item nav-category">Pos Elements</li>
+        <li class="nav-item {{pos}}">
+            <a class="nav-link" href="{% url 'pos' %}">
+                <i class="mdi mdi-cash-register menu-icon"></i>
+                <span class="menu-title">Process Sales</span>
+            </a>
+        </li>
+        <li class="nav-item {{inventory}}">
+            <a class="nav-link" href="{% url 'inventory' %}">
+                <i class="mdi mdi-database-edit menu-icon"></i>
+                <span class="menu-title">Inventory</span>
+            </a>
+        </li>
+        <li class="nav-item {{payments}}">
+            <a class="nav-link" href="{% url 'payments' %}">
+                <i class="mdi mdi-cash-usd menu-icon"></i>
+                <span class="menu-title">Payments</span>
+            </a>
+        </li>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img src="{% static 'pos/dist/img/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+        <li class="nav-item nav-category">Other Elements</li>
 
-            </div>
-            <div class="info">
-                <a href="#" class="d-block">{{ request.user.username }}</a>
-                <span class="online-dot" style="color: green; font-size: 60px">.</span><span> online</span>
-            </div>
-        </div>
+        <li class="nav-item">
+            <a class="nav-link" href="#!">
+                <i class="menu-icon mdi mdi-bell-alert"></i>
+                <span class="menu-title">Notifications</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#!">
+                <i class="menu-icon mdi mdi-wrench"></i>
+                <span class="menu-title">Settings</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#!">
+                <i class="menu-icon mdi mdi-calculator-variant"></i>
+                <span class="menu-title">Calculator</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="logout-button" href="#">
+                <i class="menu-icon mdi mdi-power"></i>
+                <span class="menu-title">Logout</span>
+            </a>
+        </li>
 
-        <!-- SidebarSearch Form -->
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a href="{% url 'admin:index' %}" class="nav-link">
-                        <i class="nav-icon fa fa-superpowers"></i>
-                        <p>
-                            Admin Panel
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'dashboard' %}" class="nav-link {{dashboard}}">
-                        <i class="nav-icon fa fa-windows"></i>
-                        <p>
-                            Dashboard
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'inventory' %}" class="nav-link {{inventory}}">
-                        <i class="nav-icon fa fa-database"></i>
-                        <p>
-                            Inventory
-                            <span class="right badge badge-info">New</span>
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'point_of_sale' %}" class="nav-link {{pos}}">
-                        <i class="nav-icon fas fa-cash-register"></i>
-                        <p>
-                            P.O.S
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'payments' %}" class="nav-link {{payments}}">
-                        <i class="nav-icon fa fa-money"></i>
-                        <p>
-                            Payments
-                            <span class="right badge badge-success">New</span>
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fa fa-comment"></i>
-                        <p>
-                            Notifications
-                            <span class="right badge badge-danger">New</span>
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fa fa-bitcoin"></i>
-                        <p>
-                            Stock Management
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Data View
-                            <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-light right">4</span>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Shop View</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Category View</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Item Detail View</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Tables</p>
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-file"></i>
-                        <p>Documentation</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-question-circle"></i>
-                        <p>Submit Issue</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-rocket"></i>
-                        <p>Upgrade to Pro</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link" id="logout">
-                        <i class="nav-icon fa fa-power-off"></i>
-                        <p>
-                            Logout
-                        </p>
-                    </a>
-                </li>
-
-
-            </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-    <div class="sidebar-custom">
-        <a data-widget="control-sidebar" data-slide="true" href="#" role="button" class="btn btn-link"><i class="fas fa-cogs"></i></a>
-        <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Help</a>
-    </div>
-    <!-- /.sidebar-custom -->
-</aside>
+        <li class="nav-item nav-category">help</li>
+        <li class="nav-item">
+            <a class="nav-link" href="#!">
+                <i class="menu-icon mdi mdi-file-document"></i>
+                <span class="menu-title">Documentation</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalContactForm">
+                <i class="menu-icon mdi mdi-account-question"></i>
+                <span class="menu-title">Submit Issue</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link start-intro-tour" href="#!">
+                <i class="menu-icon mdi mdi-binoculars"></i>
+                <span class="menu-title">Take Tour</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 
 {% endblock sidebar %}

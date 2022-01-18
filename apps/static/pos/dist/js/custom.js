@@ -88,7 +88,8 @@ $( "#logout" ).click(function() {
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 $(function () {
         $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "responsive": true, "lengthChange": true, "autoWidth": false,
+            "autoWidth": true, "info": true,
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         $('#example2').DataTable({
@@ -125,14 +126,14 @@ function appendToItemTable(item) {
     $('#example1 > tbody:last-child').append(`
                     <tr>
                         <td>${item.id}</td>
-                        <td>${item.item_name}</td>
+                        <td><a href="#!">${item.item_name}</a></td>
                         <td>${item.description}</td>
                         <td>${item.quantity}</td>
                         <td>${item.unit_price}</td>
                         <td>${item.value}</td>
                         <td><button class="btn btn-info">Avilable</button></td>
                         <td>${item.category}</td>
-                        <td>
+                        <td class="row">
                             <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#editItemModal${item.id}"><i class="fa fa-edit text-green"></i></button>
                             <button onclick="deleteItem(${item.id});" class="btn btn-outline-secondary" style="margin: 2px"><i class="fa fa-trash text-red"></i></button>
                         </td>

@@ -1,145 +1,97 @@
 {% extends 'pos/base.html' %}
 
-{% block title %} POS | ADVANCE-POS {% endblock %}
+{% block title %} ADVANCE-POS {% endblock %}
 
 {% block content %}
 
 {% load static %}
 
-
 <!--   INCLUDING THE BODY TAG -->
 {% block bodytag %} {% include 'pos/includes/body_tag.html' %} {% endblock bodytag %}
 
-<!--   INCLUDING THE PRELOADER -->
-{% block preloader %} {% include 'pos/includes/preloader.html' %} {% endblock preloader %}
-
 <!--   INCLUDING THE TOP NAV -->
 {% block topnav %} {% include 'pos/includes/topnav.html' %} {% endblock topnav %}
+<!-- partial -->
 
-<!--   INCLUDING THE SIDEBAR -->
-{% block sidebar %} {% include 'pos/includes/sidebar.html' %} {% endblock sidebar %}
+<div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_settings-panel.html -->
+    <!--   INCLUDING THE SIDEBAR -->
+    {% block settings %} {% include 'pos/includes/settings.html' %} {% endblock settings %}
+    <!-- partial -->
 
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Payments</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">payments</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+    <!--   INCLUDING THE SIDEBAR -->
+    {% block sidebar %} {% include 'pos/includes/sidebar.html' %} {% endblock sidebar %}
+    <!-- partial -->
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+    <div class="main-panel">
+        <div class="content-wrapper">
             <div class="row">
-                <div class="col-12">
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">M-PESA</h3>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body table-responsive p-0" style="height: 300px;">
-        <table id="example1" class="table table-head-fixed text-nowrap">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Reason</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>183</td>
-                    <td>John Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-success">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>219</td>
-                    <td>Alexander Pierce</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-warning">Pending</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>657</td>
-                    <td>Bob Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-primary">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>175</td>
-                    <td>Mike Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-danger">Denied</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>134</td>
-                    <td>Jim Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-success">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>494</td>
-                    <td>Victoria Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-warning">Pending</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>832</td>
-                    <td>Michael Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-primary">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>982</td>
-                    <td>Rocky Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-danger">Denied</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- /.card-body -->
-</div>
-<!-- /.card -->
+                <div class="d-sm-flex align-items-center justify-content-between">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item hide-on-mobile" style="margin: 5px;">
+                            <a href="#" id="refresh" class="btn btn-outline-warning btn-sm btn-icon-text">
+                                <i class="ti-reload btn-icon-prepend"></i>
+                                Refresh
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="hide-on-mobile">
+                        <div class="btn-wrapper">
+                            <a href="#" class="btn btn-otline-dark btn-sm align-items-center disabled"><i
+                                    class="icon-share"></i>
+                                Share</a>
+                            <a href="#" class="btn btn-otline-dark btn-sm disabled"><i class="icon-printer"></i>
+                                Print</a>
+                            <a href="#" class="btn btn-outline-mdb-color me-0 disabled" style="margin-bottom: 5px;"><i
+                                    class="icon-download"></i> Export</a>
+                        </div>
+                    </div>
                 </div>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-12">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Payments</h4>
 
+                            <div class="table-responsive pt-3">
+                                <table id="payments_table" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#ID</th>
+                                            <th>#SALE ID</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>AMOUNT</th>
+                                            <th>METHOD</th>
+                                            <th>DATE</th>
+                                            <th>ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-</div>
-
-{% block footer %} {% include 'pos/includes/footer.html' %} {% endblock footer %}
-
-
-{% endblock content %}
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        {% block footer %} {% include 'pos/includes/footer.html' %} {% endblock footer %}
+        <!-- partial -->
+    </div>
+    <!-- page-body-wrapper ends -->
+    <script src="{% static 'pos/plugins/jquery/jquery.min.js' %}"></script>
+    <script type="text/javascript">
+        /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>{% static 'pos
+                            INITIATING DATA TABLE
+             *<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+            $(function () {
+                $("#payments_table").DataTable({
+                    "responsive": true, "lengthChange": true,
+                    "autoWidth": true, "info": true,
+                    "buttons": ["excel", "pdf"]
+                }).buttons().container().appendTo('#payments_table_wrapper .col-md-6:eq(0)');
+            });
+    </script>
+    {% endblock content %}

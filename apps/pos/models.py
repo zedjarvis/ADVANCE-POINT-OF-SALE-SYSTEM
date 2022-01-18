@@ -36,9 +36,6 @@ class Category(Model):
     def __str__(self):
         return self.category_name
 
-    def save(self, *args, **kwargs):
-        super(Category, self).save(*args, **kwargs)
-
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #   Items update model
@@ -48,9 +45,6 @@ class Item(Model):
     item_name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     quantity = models.DecimalField(max_digits=12, decimal_places=2)
-    purchase_price = models.DecimalField(max_digits=12,
-                                         decimal_places=2,
-                                         blank=True)
     unit_price = models.DecimalField(max_digits=12,
                                      decimal_places=2)
     value = models.DecimalField(max_digits=12,
@@ -72,15 +66,8 @@ class Item(Model):
                                    null=True, blank=True)
 
     # Date relations
-    updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    added_on = models.DateField(auto_now_add=True)
-
-    # how much profit per item base on sale and purchase price
-    profit = models.DecimalField(max_digits=12,
-                                 decimal_places=2,
-                                 blank=True,
-                                 default=0)
+    updated_on = models.DateTimeField(auto_now=True)
 
     # External relations
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING,
@@ -91,7 +78,6 @@ class Item(Model):
 
     def save(self, *args, **kwargs):
         self.value = float(self.quantity) * float(self.unit_price)
-        self.profit = float(self.unit_price) - float(self.purchase_price)
 
         super(Item, self).save(*args, **kwargs)
 
@@ -106,18 +92,25 @@ class Stock(Model):
     purchase_price = models.DecimalField(max_digits=12,
                                          decimal_places=2,
                                          blank=True)
+    purchase_value = models.DecimalField(max_digits=12,
+                                         decimal_places=2,
+                                         blank=True)
+    # how much profit per item base on sale and purchase price
+    profit = models.DecimalField(max_digits=12,
+                                 decimal_places=2,
+                                 blank=True,
+                                 default=0)
     # Date relations
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    added_date = models.DateField(auto_now_add=True)
-    added_time = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return self.item.item_name
 
     def save(self, *args, **kwargs):
-        self.item.quantity += self.quantity
-        self.item.save()
+        self.purchase_value = float(self.quantity) * float(self.purchase_price)
+        self.profit = float(self.item.unit_price) - float(self.purchase_price)
+
         super(Stock, self).save(*args, **kwargs)
 
 
@@ -131,14 +124,18 @@ class DeadStock(Model):
     purchase_price = models.DecimalField(max_digits=12,
                                          decimal_places=2,
                                          blank=True)
+    loss = models.DecimalField(max_digits=12, decimal_places=2)
     # Date relations
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    added_date = models.DateField(auto_now_add=True)
-    added_time = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return self.item.item_name
+
+    def save(self, *args, **kwargs):
+        self.loss = float(self.quantity) * float(self.purchase_price)
+
+        super(DeadStock, self).save(*args, **kwargs)
 
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -147,7 +144,25 @@ class DeadStock(Model):
 class Sale(Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE,
                              related_name='sales')
+    description = models.TextField()
     quantity = models.DecimalField(max_digits=12, decimal_places=2)
+    value = models.DecimalField(max_digits=12,
+                                decimal_places=2,
+                                blank=True)
+
+    # Date Relations
+    updated_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    added_date = models.DateField(auto_now_add=True)
+    added_time = models.TimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.description
+
+    def save(self, *args, **kwargs):
+        self.description = f"{self.quantity} {self.item.item_name}(s) sold on {self.added_date} at {self.added_time}."
+
+        super(Sale, self).save(*args, **kwargs)
 
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -158,19 +173,19 @@ class Payment(Model):
     PAYMENT_METHOD_CHOICES = (
         ('KSH', 'CASH'),
         ('MP', 'MPESA'),
-        ('CHK', 'CHECK'),
     )
-
-    sale = models.ForeignKey(Item, on_delete=models.CASCADE,
-                             related_name='payments')
     method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES,
                               default='KSH')
     amount = models.DecimalField(max_digits=18, decimal_places=2)
+    description = models.TextField()
     # Date relations
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
     added_date = models.DateField(auto_now_add=True)
     added_time = models.TimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"A payment of '{self.amount}' made on {self.added_date} at {self.added_time}."
 
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -179,5 +194,10 @@ class Payment(Model):
 class UserSettings(Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='settings')
-    show_online_blink = models.BooleanField(default=True)
     dark_mode = models.BooleanField(default=False)
+    # Date relations
+    updated_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Settings."

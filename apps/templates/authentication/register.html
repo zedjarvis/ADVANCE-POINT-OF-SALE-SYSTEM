@@ -1,80 +1,70 @@
 {% extends 'pos/base.html' %}
 
-{% block title %} Login | APOS {% endblock %}
+{% block title %} REGISTER | ADPOS {% endblock %}
 
 {% block content %}
 
 {% load static %}
 
-<body class="hold-transition dark-mode register-page" style="background-image: url(/static/pos/dist/img/photo2.png); background-size: cover; opacity: 0.9;">
-<div class="register-box">
-  <div class="card card-outline card-primary">
-    <div class="card-header text-center">
-      <a href="#" class="h1">
-        <img src="{% static 'pos/dist/img/AdminLTELogo.png' %}" alt="Apos Logo" class="brand-image img-circle elevation-2 animation__shake"
-          style="opacity: .8">
-        <span class="brand-text font-weight-bold">ADVANCE P.O.S.</span>
-      </a>
+<body style="background-image: url(../../images/photo2.png) !important;">
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="content-wrapper d-flex align-items-center auth px-0">
+        <div class="row w-100 mx-0">
+          <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+              <div class="brand-logo">
+                <a href="#" class="row-cols-1" style="text-decoration: none;">
+                  <img class="animation__shake" src="{% static 'pos/dist/images/logo-mini.svg' %}" alt="Apos Logo"
+                    style="opacity: .8">
+                </a>
+              </div>
+              <h4>Hello! let's get started</h4>
+              <h6 class="fw-light">Create Account to continue.</h6>
+              <form class="pt-3" method="POST">
+                {% csrf_token %}
+                <div class="modal-body mx-4">
+                  <!--Body-->
+                  <div class="md-form mb-5">
+                    <i class="mdi mdi-account prefix grey-text"></i>
+                    <input type="text" id="Form-email1" class="form-control validate">
+                    <label data-error="wrong" data-success="right" for="Form-email1">Username</label>
+                  </div>
+
+                  <div class="md-form mb-5">
+                    <i class="mdi mdi-email prefix grey-text"></i>
+                    <input type="email" id="Form-email1" class="form-control validate">
+                    <label data-error="wrong" data-success="right" for="Form-email1">Your email</label>
+                  </div>
+
+                  <div class="md-form pb-3">
+                    <i class="mdi mdi-key prefix grey-text"></i>
+                    <input type="password" id="Form-pass1" class="form-control validate">
+                    <label data-error="wrong" data-success="right" for="Form-pass1">Your password</label>
+                  </div>
+
+                  <div class="md-form pb-5">
+                    <i class="mdi mdi-key prefix grey-text"></i>
+                    <input type="password" id="Form-pass2" class="form-control validate">
+                    <label data-error="wrong" data-success="right" for="Form-pass1">Confirm password</label>
+                  </div>
+
+                  <div class="text-center mb-3">
+                    <button type="button" class="btn blue-gradient btn-block btn-rounded z-depth-1a">Create Account</button>
+                  </div>
+                </div>
+                <div class="text-center mt-4 fw-light">
+                  Already have an account? <a href="{% url 'login' %}" class="text-primary">Login</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
     </div>
-    <div class="card-body">
-      <p class="login-box-msg">Create Account and Get Started</p>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
 
-      <form method="POST" class="was-validated">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-          {{form.username}}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          {{form.email}}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          {{form.password1}}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          {{form.password2}}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="agreeTerms" name="terms" value="agree" required>
-              <label for="agreeTerms">
-               I agree to the <a href="#">terms</a>
-              </label>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
-
-      <a href="{% url 'login' %}" class="text-center">I already have an Account</a>
-    </div>
-    <!-- /.form-box -->
-  </div><!-- /.card -->
-</div>
-<!-- /.register-box -->
-
-{% endblock content %}
+  {% endblock content %}

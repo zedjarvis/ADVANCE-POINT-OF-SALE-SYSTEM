@@ -26,15 +26,12 @@ def create_welcome_notifications(sender, **kwargs):
     if kwargs.get('created', False):
         Notification.objects.create(
             user=kwargs.get('instance'),
-            title="WELCOME TO X-POS",
-            message="We will help you manage your business effectively.")
+            message="Welcome to ADVANCE POINT OF SALE, will help you manage your business effectively.")
 
         Notification.objects.create(
             user=kwargs.get('instance'),
-            title="EVERYTHING IN ONE PLACE",
-            message="With X-POS, we have automated most of the process so you don't have to repeat yourself. It's that simple.")
+            message="we have automated most of the process so you don't have to repeat yourself. It's that simple.")
 
         Notification.objects.create(
             user=kwargs.get('instance'),
-            title="UPGRADE TO PRO",
-            message="Get the more of XPOS with the pro version.")
+            message="We have made most things as obvious as possible, Make sure you take the tour to Learn More.")

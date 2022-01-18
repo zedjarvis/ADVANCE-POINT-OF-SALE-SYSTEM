@@ -34,3 +34,4 @@ def generate_item_upc_default(length=7):
 def get_listof_values(listofdicts, value):
     default_value = 'None'
     return list(map(lambda d: d.get(value, default_value), listofdicts))
+

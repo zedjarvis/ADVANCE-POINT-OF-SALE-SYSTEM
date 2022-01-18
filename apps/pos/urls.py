@@ -10,5 +10,5 @@ urlpatterns = [
     path('dashboard/', dashboard, name="dashboard"),
     path('inventory/', view_items_inventory, name="inventory"),
     path('payments/', view_payments, name="payments"),
-    path('process_sales/', point_of_sale, name="point_of_sale"),
+    path('process_sales/', point_of_sale, name="pos"),
 ]

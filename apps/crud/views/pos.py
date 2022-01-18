@@ -41,7 +41,7 @@ def get_list_forautocomplete(request):
                 return JsonResponse({'categories': category_list})
             else:
                 name_to_get = "item_name"
-                items = Item.objects.values(name_to_get)
+                items = Item.objects.filter(quantity__gte=1).values(name_to_get)
                 item_list = get_listof_values(items, name_to_get)
                 return JsonResponse({'items': item_list})
         except (Exception) as e:
@@ -53,14 +53,13 @@ def get_list_forautocomplete(request):
 # get purchased item list and update sales and payments
 @csrf_exempt
 def get_purchased_items(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
-            purchased_items = request.POST.get('items')
+            purchased_items = request.GET.get('items')
             print(purchased_items)
             return JsonResponse({'msg': 'success'})
         except (Exception) as e:
             error = str(e)
-            print(error)
             return JsonResponse({'error': error})
     else:
         return JsonResponse({'invalid': 'invalid request'})

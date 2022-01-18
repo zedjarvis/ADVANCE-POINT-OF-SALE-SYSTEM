@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import re
 from decouple import config
 from pathlib import Path
 
@@ -21,11 +22,13 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config(
-    'SECRET_KEY', default='django-insecure-9gek7)9zs#b#t_p6nu#28$#s@h42j)==z9n@uya1&-i4(#mqd2')
+    'SECRET_KEY',
+    default='django-insecure-9gek7)9zs#b#t_p6nu#28$#s@h42j)==z9n@uya1&-i4(#mqd2')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 TEMPLATE_DEBUG = DEBUG
+
 
 ADMINS = (
     ('Cedrouseroll', 'omondicedo@gmail.com'),
@@ -60,12 +63,8 @@ INSTALLED_APPS = [
     'apps.crud',
 
     # Third Party Apps
-    'django_cleanup',
     'crispy_forms',
-    'rest_framework',
-    'corsheaders',
     'storages',
-    'ckeditor',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -80,7 +79,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.authentication.middleware.SessionIdleTimeoutMiddleware'
+    'django.middleware.common.BrokenLinkEmailsMiddleware',  # report 404 errors
+
+    # Custom Middlewares
+    # 'apps.authentication.middleware.SessionIdleTimeoutMiddleware'
+]
+
+# IGNORE 404 FROM SITES REQUESTING CGI, PHP AND WEB CRAWLERS
+IGNORABLE_404_URLS = [
+    re.compile(r'\.(php|cgi)$'),
+    re.compile(r'^/phpmyadmin/'),
+    re.compile(r'^/apple-touch-icon.*\.png$'),
+    re.compile(r'^/favicon\.ico$'),
+    re.compile(r'^/robots\.txt$'),
 ]
 
 
@@ -91,8 +102,8 @@ INACTIVE_TIME = 60 * 15
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires on closing browser
-SESSION_COOKIE_AGE = INACTIVE_TIME  # Session expiry after set time
-SESSION_IDLE_TIMEOUT = INACTIVE_TIME
+# SESSION_COOKIE_AGE = INACTIVE_TIME  # Session expiry after set time
+# SESSION_IDLE_TIMEOUT = INACTIVE_TIME
 SESSION_SAVE_EVERY_REQUEST = True
 
 

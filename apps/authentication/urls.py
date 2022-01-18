@@ -5,10 +5,10 @@ Copyright (c) 2021 - Cedrouseroll
 
 from django.urls import path
 from .views import register_user, lock_screen, reset_password, lock_screen_view
-from django.contrib.auth.views import LogoutView, LoginView as view
+from django.contrib.auth.views import LogoutView, LoginView
 
 urlpatterns = [
-    path('login/', view.as_view(
+    path('login/', LoginView.as_view(
         template_name='authentication/login.html',
         redirect_authenticated_user=True), name="login"),
     path('register/', register_user, name="register"),

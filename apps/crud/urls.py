@@ -22,5 +22,5 @@ urlpatterns = [
     # point of sale page
     path('get_item_price/', pos.get_item_price),
     path('get_object_list/', pos.get_list_forautocomplete),
-    path('update_purchased_items', pos.get_purchased_items),
+    path('update_purchased_items/', pos.get_purchased_items),
 ]

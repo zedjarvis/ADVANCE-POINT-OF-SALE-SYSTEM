@@ -1,11 +1,10 @@
 {% extends 'pos/base.html' %}
 
-{% block title %} Dashboard | ADVANCE-POS {% endblock %}
+{% block title %} ADVANCE-POS {% endblock %}
 
 {% block content %}
 
 {% load static %}
-
 
 <!--   INCLUDING THE BODY TAG -->
 {% block bodytag %} {% include 'pos/includes/body_tag.html' %} {% endblock bodytag %}
@@ -15,207 +14,247 @@
 
 <!--   INCLUDING THE TOP NAV -->
 {% block topnav %} {% include 'pos/includes/topnav.html' %} {% endblock topnav %}
+<!-- partial -->
 
-<!--   INCLUDING THE SIDEBAR -->
-{% block sidebar %} {% include 'pos/includes/sidebar.html' %} {% endblock sidebar %}
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">APOS 2.0</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_settings-panel.html -->
+    <!--   INCLUDING THE SIDEBAR -->
+    {% block settings %} {% include 'pos/includes/settings.html' %} {% endblock settings %}
+    <!-- partial -->
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block border-right">
-                            <span class="description-percentage text-cyan"><i class="fas fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">$0.00</h5>
-                            <span class="description-text">TOTAL REVENUE</span>
+    <!--   INCLUDING THE SIDEBAR -->
+    {% block sidebar %} {% include 'pos/includes/sidebar.html' %} {% endblock sidebar %}
+    <!-- partial -->
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="home-tab">
+                        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                            <ul class="nav nav-tabs hide-on-mobile">
+                                <li class="nav-item">
+                                    <a href="{% url 'payments' %}" class="btn btn-outline-behance btn-sm"
+                                        data-intro="Access payments screen" data-position="bottom"><i
+                                            class="ti-money btn-icon-append"></i> Payments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'inventory' %}" class="btn btn-outline-success btn-sm btn-icon-text"
+                                        data-intro="View, add, edit, delete items in your inventory."
+                                        data-position="top">
+                                        <i class="ti-layers btn-icon-append"></i> inventory
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'pos' %}" class="btn btn-outline-pinterest btn-sm btn-icon-text"
+                                        data-intro="Go to process sales page" data-position="bottom">
+                                        <i class="ti-shopping-cart-full btn-icon-prepend"></i>
+                                        POS
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" id="refresh" class="btn btn-outline-warning btn-sm btn-icon-text">
+                                        <i class="ti-reload btn-icon-prepend"></i>
+                                        Refresh
+                                    </a>
+                                </li>
+                            </ul>
+                            <div>
+                                <div class="btn-wrapper">
+                                    <a href="#" class="btn btn-otline-dark align-items-center"><i
+                                            class="icon-share"></i> Share</a>
+                                    <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
+                                    <a href="#" id="export-button" class="btn btn-primary text-white me-0"><i
+                                            class="icon-download"></i>
+                                        Export</a>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block border-right">
-                            <span class="description-percentage text-cyan"><i class="fas fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">$0.00</h5>
-                            <span class="description-text">TOTAL COST</span>
+                        <div class="tab-content tab-content-basic">
+                            <div class="tab-pane fade show active">
+                                <div class="hide-on-mobile row">
+                                    <div class="col-sm-12">
+                                        <div
+                                            class="statistics-details d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p class="statistics-title">Total Value</p>
+                                                <h3 class="rate-percentage">${{total_value}}</h3>
+                                                <p class="text-info d-flex"><i
+                                                        class="mdi mdi-menu-left"></i><span>0.00%</span></p>
+                                            </div>
+                                            <div>
+                                                <p class="statistics-title">Total Cost</p>
+                                                <h3 class="rate-percentage">${{total_cost}}</h3>
+                                                <p class="text-info d-flex"><i
+                                                        class="mdi mdi-menu-left"></i><span>0.00%</span></p>
+                                            </div>
+                                            <div>
+                                                <p class="statistics-title">Total Profit</p>
+                                                <h3 class="rate-percentage">${{total_profit}}</h3>
+                                                <p class="text-info d-flex"><i
+                                                        class="mdi mdi-menu-left"></i><span>0.00%</span></p>
+                                            </div>
+                                            <div class="d-none d-md-block">
+                                                <p class="statistics-title">Today's Sales</p>
+                                                <h3 class="rate-percentage">$0.00</h3>
+                                                <p class="text-info d-flex"><i
+                                                        class="mdi mdi-menu-left"></i><span>0.00%</span></p>
+                                            </div>
+                                            <div class="d-none d-md-block">
+                                                <p class="statistics-title">Today's Profit</p>
+                                                <h3 class="rate-percentage">$0.00</h3>
+                                                <p class="text-info d-flex"><i
+                                                        class="mdi mdi-menu-left"></i><span>0.00%</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!-- SALES CHART -->
+                                    <div class="col-lg-8 d-flex flex-column">
+                                        <div class="row flex-grow">
+                                            <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
+                                                <div class="card card-rounded">
+                                                    <div class="card-body">
+                                                        <div
+                                                            class="d-sm-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <h4 class="card-title card-title-dash">Performance
+                                                                    Chart</h4>
+                                                                <h5 class="card-subtitle card-subtitle-dash">Weekly
+                                                                    sales comparison overview</h5>
+                                                            </div>
+                                                            <div id="performance-line-legend"></div>
+                                                        </div>
+                                                        <div class="chartjs-wrapper mt-5">
+                                                            <canvas id="marketingOverview"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END OF SALES CHART -->
+
+                                    <div class="col-lg-4 d-flex flex-column">
+                                        <div class="row flex-grow">
+                                            <div class="col-md-6 col-lg-12 grid-margin stretch-card"
+                                                data-intro="All items in your inventory vs items in stock."
+                                                data-position="top">
+                                                <div class="card card-rounded">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center mb-2 mb-sm-0">
+                                                                    <div class="circle-progress-width">
+                                                                        <div id="totalVisitors"
+                                                                            class="progressbar-js-circle pr-2"></div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p class="text-small mb-2">Total Items</p>
+                                                                        <h4 class="mb-0 fw-bold">{{number_of_items}}
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <div class="circle-progress-width">
+                                                                        <div id="visitperday"
+                                                                            class="progressbar-js-circle pr-2"></div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p class="text-small mb-2">Total in Stock</p>
+                                                                        <h4 class="mb-0 fw-bold">{{items_in_stock}}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                                                <div class="card bg-primary card-rounded">
+                                                    <div class="card-body pb-0">
+                                                        <h4 class="card-title card-title-dash text-white mb-4">Daily
+                                                            Customer Visits</h4>
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <p class="status-summary-ight-white mb-1">Average Value
+                                                                </p>
+                                                                <h2 class="text-info">0</h2>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <div class="status-summary-chart-wrapper pb-4">
+                                                                    <canvas id="status-summary"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-8 d-flex flex-column">
+                                        <div class="row flex-grow">
+                                            <div class="col-12 grid-margin stretch-card"
+                                                data-intro="Please Consider<br>upgrading to <br>pro version,<br>to get the full<br>functionality and<br>support advance POS."
+                                                data-position="left">
+                                                <div class="card card-rounded table-darkBGImg">
+                                                    <div class="card-body">
+                                                        <div class="col-sm-8">
+                                                            <h3 class="text-white upgrade-info mb-0">
+                                                                Enhance your <span class="fw-bold">POS</span> for
+                                                                better Experience and performance
+                                                            </h3>
+                                                            <a href="#" class="btn btn-info upgrade-btn">Like Us on Facebook</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 d-flex flex-column">
+                                        <div class="row flex-grow">
+                                            <div class="col-12 grid-margin stretch-card">
+                                                <div class="card card-rounded">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center mb-3">
+                                                                    <h4 class="card-title card-title-dash">Performance by
+                                                                        Category</h4>
+                                                                </div>
+                                                                <canvas class="my-auto" id="doughnutChart"
+                                                                    height="200"></canvas>
+                                                                <div id="doughnut-chart-legend"
+                                                                    class="mt-5 text-center"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block border-right">
-                            <span class="description-percentage text-cyan"><i class="fas fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">$0.00</h5>
-                            <span class="description-text">TOTAL PROFIT</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block">
-                            <span class="description-percentage text-cyan"><i class="fas fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">$0.00</h5>
-                            <span class="description-text">ESTIMATED MONTHLY GAIN</span>
-                        </div>
-                        <!-- /.description-block -->
                     </div>
                 </div>
-                <!-- /.row -->
             </div>
+            <!-- content-wrapper ends -->
+
+            {% block footer %} {% include 'pos/includes/footer.html' %} {% endblock footer %}
+            <!-- partial -->
         </div>
-        <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>0</h3>
-
-                            <p>TOTAL ITEMS</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-shopping-bag"></i>
-                        </div>
-                        <a href="{% url 'inventory' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-gradient-gray">
-                        <div class="inner">
-                            <h3>0</h3>
-
-                            <p>TOTAL IN STOCK</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-chart-line"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3>0</h3>
-
-                            <p>TOTAL SALES</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-chart-bar"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>0</h3>
-
-                            <p>AVG CUSTOMERS</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-users"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-            </div>
-            <!-- /.row -->
-
-
-            <!-- =========================================================== -->
-            <div class="row">
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box shadow">
-                        <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Shadows</span>
-                            <span class="info-box-number">None</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box shadow">
-                        <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Shadows</span>
-                            <span class="info-box-number">Small</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box shadow">
-                        <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Shadows</span>
-                            <span class="info-box-number">Regular</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box shadow">
-                        <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Shadows</span>
-                            <span class="info-box-number">Large</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
-
-
-            <!-- Main row -->
-
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-{% block footer %} {% include 'pos/includes/footer.html' %} {% endblock footer %}
-
-{% endblock content %}
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+    {% endblock content %}
