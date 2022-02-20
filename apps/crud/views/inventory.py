@@ -39,7 +39,6 @@ class CreateItem(View):
 
         item = Item(item_name=item_name, description=item_description,
                     quantity=item_quantity, unit_price=unit_price,
-                    purchase_price=purchase_price,
                     reorder_level=reorder_level,
                     reorder_quantity=reoder_quantity,
                     location=location, category=category)
@@ -51,7 +50,6 @@ class CreateItem(View):
                 'quantity': item.quantity,
                 'unit_price': item.unit_price,
                 'value': item.value,
-                'purchase_price': item.purchase_price,
                 'reorder_level': item.reorder_level,
                 'reorder_quantity': item.reorder_quantity,
                 'location': item.location,

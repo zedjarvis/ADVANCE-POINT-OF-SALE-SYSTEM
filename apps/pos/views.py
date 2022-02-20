@@ -54,7 +54,7 @@ def view_items_inventory(request):
     context = {'inventory': 'active',
                'items': items,
                'categories': categories}
-    return render(request, 'pos/inventory2.html', context)
+    return render(request, 'pos/inventory.html', context)
 
 
 @login_required
